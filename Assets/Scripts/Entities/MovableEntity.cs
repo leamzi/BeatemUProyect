@@ -33,7 +33,7 @@ public abstract class MovableEntity : MonoBehaviour {
         {
             //Update velocity, removing the actual movement
             _velocity = _velocity - clamped_movement;
-            //Move to new position
+            //Move to the new position
             Warp(Translate(clamped_movement));
         }
 
