@@ -3,8 +3,8 @@ using System.Collections;
 
 public enum eWorldDirection
 {
-    left = -1,
-    right = 1
+    left = 1,
+    right = -1
 }
 
 public class CharacterEntity : MovableEntity {
@@ -23,7 +23,7 @@ public class CharacterEntity : MovableEntity {
                 transform.localScale = local_scale;
             }
             _direction_factor = dir_factor;
-        }
+        } 
     }
 
     public virtual eWorldDirection GetDirection() { return (eWorldDirection) _direction_factor; }

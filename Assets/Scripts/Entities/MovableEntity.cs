@@ -57,6 +57,26 @@ public abstract class MovableEntity : MonoBehaviour {
         transform.position = (Vector3)ClampPosition(warp_pos);
     }
 
+    public virtual void GoLeft (float factor = 1.0f)
+    {
+        _velocity.x -= speed * Time.deltaTime * factor;
+    }
+
+    public virtual void GoRight(float factor = 1.0f)
+    {
+        _velocity.x += speed * Time.deltaTime * factor;
+    }
+
+    public virtual void GoUp(float factor = 1.0f)
+    {
+        _velocity.y += speed * Time.deltaTime * factor * up_speed_factor;
+    }
+
+    public virtual void GoDown(float factor = 1.0f)
+    {
+        _velocity.y -= speed * Time.deltaTime * factor * up_speed_factor;
+    }
+
     // --- ABSTACT METHODS --- //
     protected abstract void OnStart();
     protected abstract void OnUpdate();
