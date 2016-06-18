@@ -12,17 +12,6 @@ public class PlayableEntity : CharacterEntity {
         ChangeDirection((float)start_direction);
     }
 
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-
-        //Test hack
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            GoRight();
-        }
-        
-    }
     public override void GoLeft(float factor = 1.0f)
     {
         base.GoLeft(factor);

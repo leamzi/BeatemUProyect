@@ -77,6 +77,27 @@ public abstract class MovableEntity : MonoBehaviour {
         _velocity.y -= speed * Time.deltaTime * factor * up_speed_factor;
     }
 
+    public virtual void Move(Vector2 move_factor)
+    {
+        if (move_factor.x > 0 )
+        {
+            GoRight();
+        }
+        else if (move_factor.x < 0)
+        {
+            GoLeft();
+        }
+
+        if (move_factor.y > 0)
+        {
+            GoUp();
+        }
+        else if (move_factor.y < 0)
+        {
+            GoDown();
+        }
+    }
+
     // --- ABSTACT METHODS --- //
     protected abstract void OnStart();
     protected abstract void OnUpdate();
