@@ -29,6 +29,7 @@ public class CharacterEntity : MovableEntity {
     public virtual eWorldDirection GetDirection() { return (eWorldDirection) _direction_factor; }
 
     protected override void OnLateUpdate(){}
+    protected override void OnAwake() {}
     protected override void OnStart() {}
     protected override void OnUpdate() {}
 }

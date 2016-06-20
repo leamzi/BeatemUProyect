@@ -8,6 +8,12 @@ public class PlayableEntity : CharacterEntity {
     public tk2dSpriteAnimator animator { get { return _sprite_animator; } }
 
     public eWorldDirection start_direction;
+
+    protected override void OnAwake ()
+    {
+        base.OnAwake();
+        _sprite_animator = GetComponent<tk2dSpriteAnimator>();
+    }
  
     protected override void OnStart()
     {
