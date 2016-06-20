@@ -33,7 +33,7 @@ public abstract class MovableEntity : MonoBehaviour {
         {
             for (int i = 0; i < collider_layers.Length; i++)
             {
-                _layer_mask |= 1 << LayerMask.NameToLayer(collider_layers[1]);
+                _layer_mask |= 1 << LayerMask.NameToLayer(collider_layers[i]);
             }
         }
 
