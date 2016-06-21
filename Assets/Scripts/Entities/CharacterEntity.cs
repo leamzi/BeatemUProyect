@@ -21,6 +21,13 @@ public class CharacterEntity : MovableEntity {
             {
                 local_scale.x = dir_factor;
                 transform.localScale = local_scale;
+
+                if (move_collider != null)
+                {
+                    Vector3 pos = transform.position;
+                    pos.x += -local_scale.x * move_collider.offset.x * 2.0f;
+                    transform.position = pos;
+                }
             }
             _direction_factor = dir_factor;
         } 

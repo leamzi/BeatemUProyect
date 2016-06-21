@@ -114,10 +114,12 @@ public abstract class MovableEntity : MonoBehaviour {
 
             for (int i = 0; i < _surronding_colliders.Length; i++)
             {
+                //checked tat we're not dealing with our own collider
                 if ( _surronding_colliders[i] != null && _surronding_colliders[i].gameObject != gameObject)
                 {
                     BoxCollider2D other_collider = (BoxCollider2D)_surronding_colliders[i];
                     Vector2 other_center = other_collider.offset;
+
                     other_center += (Vector2)other_collider.transform.position;
                     Vector2 other_size = other_collider.size;
                     Vector2 other_min_point = other_center - other_size / 2.0f;
