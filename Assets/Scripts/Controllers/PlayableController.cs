@@ -18,6 +18,7 @@ public abstract class PlayableController : MonoBehaviour {
         _playable_actions.Right.AddDefaultBinding(Key.D);
         _playable_actions.Down.AddDefaultBinding(Key.S);
         _playable_actions.Up.AddDefaultBinding(Key.W);
+        _playable_actions.Attack.AddDefaultBinding(Key.E);
 
         _state = GetDefaultState();
         _state.Enter(playable_entity);
