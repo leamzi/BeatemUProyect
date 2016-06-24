@@ -34,6 +34,8 @@ public abstract class PlayableController : MonoBehaviour {
         }
     }
 
+
+
     protected abstract iPlayableState GetDefaultState();
 
 }

@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 public abstract class MovableEntity : MonoBehaviour {
 
     private Collider2D[] _surronding_colliders;
 
     protected int _layer_mask;
     protected Vector2 _velocity;
+
+    protected tk2dSprite _sprite;
 
     public float speed;
     public float up_speed_factor;
@@ -16,6 +20,7 @@ public abstract class MovableEntity : MonoBehaviour {
 
     private void Awake ()
     {
+        _sprite = GetComponent<tk2dSprite>();
         OnAwake();
     }
 
@@ -85,6 +90,11 @@ public abstract class MovableEntity : MonoBehaviour {
 
         OnLateUpdate();
     }
+#if UNITY_EDITOR
+    protected virtual void OnDrawGizmos() {}
+#endif
+
+
     //Returns the number of the colliders impact by movement (also updates _surrounding_colliders list)
     private int UpdateSurroundingColliders (Vector2 movement)
     {
@@ -206,10 +216,17 @@ public abstract class MovableEntity : MonoBehaviour {
         }
     }
 
+    public tk2dSprite GetSprite ()
+    {
+        if (_sprite != null)
+        {
+            return _sprite;
+        }
+        return null;
+    }
     // --- ABSTACT METHODS --- //
     protected abstract void OnStart();
     protected abstract void OnAwake();
     protected abstract void OnUpdate();
     protected abstract void OnLateUpdate();
-
 }
