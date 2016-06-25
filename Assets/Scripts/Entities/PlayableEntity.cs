@@ -7,9 +7,11 @@ public class PlayableEntity : CharacterEntity {
 
     public tk2dSpriteAnimator animator { get { return _sprite_animator; } }
 
+    public BoxCollider2D attack_collider;
+    public BoxCollider2D hitzone_collider;
+
     public eWorldDirection start_direction;
 
-    public BoxCollider2D attack_collider;
 
     protected override void OnAwake ()
     {
@@ -29,7 +31,15 @@ public class PlayableEntity : CharacterEntity {
     {
         base.OnUpdate();
 
-        bool attack_found = false;
+        if (attack_collider != null)
+        {
+            attack_collider.enabled = false;
+        }
+
+        if (hitzone_collider != null)
+        {
+            hitzone_collider.enabled = false;
+        }
 
         tk2dSpriteColliderDefinition[] sprite_colliders = _sprite.CurrentSprite.customColliders;
         for (int i = 0; i < sprite_colliders.Length; i++)
@@ -42,23 +52,27 @@ public class PlayableEntity : CharacterEntity {
                     case "AttackCollider":
                         if (attack_collider != null)
                         {
-                            attack_found = true;
-
                             Vector3 origin = collider_def.origin;
                             origin.x *= (float)GetDirection();
                             attack_collider.offset = origin;
                             attack_collider.size = collider_def.Size;
+                            attack_collider.enabled = true;
+                        }
+                        break;
+                     case "HitZoneCollider":
+                        if (hitzone_collider != null)
+                        {
+                            Vector3 origin = collider_def.origin;
+                            origin.x *= (float)GetDirection();
+                            hitzone_collider.offset = origin;
+                            hitzone_collider.size = collider_def.Size;
+                            hitzone_collider.enabled = true;
                         }
                         break;
                     default:
                         break;
                 }
             }
-        }
-
-        if (attack_collider != null)
-        {
-            attack_collider.enabled = attack_found;
         }
     }
 
@@ -88,15 +102,26 @@ public class PlayableEntity : CharacterEntity {
                     tk2dSpriteColliderDefinition collider_def = sprite_colliders[i];
                     if (collider_def != null)
                     {
+                        Vector3 origin;
+                        Vector3 size;
                         switch (collider_def.name)
                         {
                             case "AttackCollider":
-                                Vector3 origin = collider_def.origin;
+                                origin = collider_def.origin;
                                 origin.x *= (float)GetDirection();
                                 origin = transform.position + origin;
                                 origin.z -= 1;
-                                Vector3 size = collider_def.Size;
-                                Gizmos.color = new Color(1, 1, 0, 0.5f);
+                                size = collider_def.Size;
+                                Gizmos.color = new Color(1, 1, 0, 0.8f);
+                                Gizmos.DrawCube(origin, size);
+                                break;
+                            case "HitZoneCollider":
+                                origin = collider_def.origin;
+                                origin.x *= (float)GetDirection();
+                                origin = transform.position + origin;
+                                origin.z -= 1;
+                                size = collider_def.Size;
+                                Gizmos.color = new Color(0, 1, 1, 0.8f);
                                 Gizmos.DrawCube(origin, size);
                                 break;
                             default:
