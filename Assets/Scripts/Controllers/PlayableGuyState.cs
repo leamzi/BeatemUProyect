@@ -76,6 +76,39 @@ public class GuyAttackingState :iPlayableState
         {
             _last_action = Time.time;
         }
+        BoxCollider2D attack_collider = playable_entity.attack_collider;
+        if (attack_collider != null && attack_collider.enabled == true)
+        {
+            BoxCollider2D[] overlapped_colliders = new BoxCollider2D[8];
+
+            Vector2 min_point = attack_collider.offset;
+            min_point.x *= (float) playable_entity.GetDirection(); 
+            min_point = min_point + (Vector2) playable_entity.transform.position - attack_collider.size / 2.0f;
+            Vector2 max_point = min_point + attack_collider.size;
+
+            if (Physics2D.OverlapAreaNonAlloc(min_point, max_point, overlapped_colliders) > 0)
+            {
+                for (int i = 0; i < overlapped_colliders.Length; i++)
+                {
+                    BoxCollider2D other_collider = overlapped_colliders[i];
+                    if (other_collider != null && LayerMask.LayerToName(other_collider.gameObject.layer) == "HitZoneCollider")
+                    {
+                        GameObject hit_gameobject = other_collider.transform.parent.parent.gameObject;
+                        if (playable_entity.gameObject != hit_gameobject)
+                        {
+                            string layer_name = LayerMask.LayerToName(hit_gameobject.layer);
+                            switch (layer_name)
+                            {
+
+                                default:
+                                    break;
+                            }
+                        }
+                        Debug.Log("HIT: " + other_collider.transform.parent.parent.name);
+                    }
+                }
+            }
+        }
         return null;
     }
 
