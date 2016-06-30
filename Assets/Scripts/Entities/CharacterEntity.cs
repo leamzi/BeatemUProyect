@@ -18,6 +18,7 @@ public class CharacterEntity : MovableEntity {
 
     protected void ChangeDirection (float dir_factor)
     {
+        //Debug.Log("Changing Direction: " + dir_factor);
         if (dir_factor != _direction_factor)
         {
             Vector3 local_scale = transform.localScale;
@@ -33,6 +34,7 @@ public class CharacterEntity : MovableEntity {
                     pos.x += -local_scale.x * move_collider.offset.x * 2.0f;
                     transform.position = pos;
                 }
+               
             }
             _direction_factor = dir_factor;
         } 
@@ -64,7 +66,7 @@ public class CharacterEntity : MovableEntity {
                         if (attack_collider != null)
                         {
                             Vector3 origin = collider_def.origin;
-                            origin.x *= (float)GetDirection();
+                            //origin.x *= (float) GetDirection();
                             attack_collider.offset = origin;
                             attack_collider.size = collider_def.Size;
                             attack_collider.enabled = true;
@@ -74,7 +76,11 @@ public class CharacterEntity : MovableEntity {
                         if (hitzone_collider != null)
                         {
                             Vector3 origin = collider_def.origin;
-                            origin.x *= (float)GetDirection();
+                            //origin.x *= (float) GetDirection();
+
+                            //Debug.Log("get direction: " + GetDirection());
+                            //origin = transform.position + origin;
+                            origin.z -= 1;
                             hitzone_collider.offset = origin;
                             hitzone_collider.size = collider_def.Size;
                             hitzone_collider.enabled = true;
@@ -115,7 +121,7 @@ public class CharacterEntity : MovableEntity {
         {
             if (move_collider != null) //Display Move Collider
             {
-                Vector3 origin = (Vector3)move_collider.offset;
+                Vector3 origin = (Vector3 )move_collider.offset;
                 origin.x *= (float)GetDirection();
                 origin = transform.position + origin;
                 origin.z -= 1;
