@@ -43,7 +43,7 @@ public class GuyMovingState : iPlayableState
         }
         else
         {
-            playable_entity.Move(actions.Move);
+            playable_entity.Move(actions.Move.Value);
         }
 
         return null;
@@ -76,6 +76,7 @@ public class GuyAttackingState :iPlayableState
         {
             _last_action = Time.time;
         }
+
         BoxCollider2D attack_collider = playable_entity.attack_collider;
         if (attack_collider != null && attack_collider.enabled == true)
         {
@@ -90,20 +91,20 @@ public class GuyAttackingState :iPlayableState
             {
                 for (int i = 0; i < overlapped_colliders.Length; i++)
                 {
-                    BoxCollider2D other_collider = overlapped_colliders[i];
+                    BoxCollider2D other_collider = overlapped_colliders[i]; 
                     if (other_collider != null && LayerMask.LayerToName(other_collider.gameObject.layer) == "HitZoneCollider")
                     {
-                        GameObject hit_gameobject = other_collider.transform.parent.parent.gameObject;
-                        if (playable_entity.gameObject != hit_gameobject)
-                        {
-                            string layer_name = LayerMask.LayerToName(hit_gameobject.layer);
-                            switch (layer_name)
-                            {
+                        //GameObject hit_gameobject = other_collider.transform.parent.parent.gameObject;
+                        //if (playable_entity.gameObject != hit_gameobject)
+                        //{
+                        //    string layer_name = LayerMask.LayerToName(hit_gameobject.layer);
+                        //    switch (layer_name)
+                        //    {
 
-                                default:
-                                    break;
-                            }
-                        }
+                        //        default:
+                        //            break;
+                        //    }
+                        //}
                         Debug.Log("HIT: " + other_collider.transform.parent.parent.name);
                     }
                 }
