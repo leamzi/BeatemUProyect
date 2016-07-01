@@ -16,7 +16,7 @@ public class CharacterEntity : MovableEntity {
 
     public eWorldDirection start_direction;
 
-    protected void ChangeDirection (float dir_factor)
+    public void ChangeDirection (float dir_factor)
     {
         //Debug.Log("Changing Direction: " + dir_factor);
         if (dir_factor != _direction_factor)

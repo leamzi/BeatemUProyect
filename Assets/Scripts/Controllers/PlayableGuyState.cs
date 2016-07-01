@@ -104,7 +104,7 @@ public class GuyAttackingState :iPlayableState
                                     EnemyController controller = hit_gameobject.GetComponent<EnemyController>();
                                     if (controller != null)
                                     {
-                                        controller.SetHit();
+                                        controller.SetHit(playable_entity);
                                     }
                                     break;
                                 default:
