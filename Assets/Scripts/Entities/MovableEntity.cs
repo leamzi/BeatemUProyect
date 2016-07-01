@@ -47,6 +47,23 @@ public abstract class MovableEntity : MonoBehaviour {
 
     private void Update ()
     {
+        if (move_collider != null)
+        {
+            move_collider.enabled = false;
+            tk2dSpriteColliderDefinition[] sprite_colliders = _sprite.CurrentSprite.customColliders;
+            for (int i = 0; i < sprite_colliders.Length; i++)
+            {
+                tk2dSpriteColliderDefinition collider_def = sprite_colliders[i];
+                if (collider_def != null && collider_def.name == "MoveCollider")
+                {
+                    Vector3 origin = collider_def.origin;
+                    move_collider.offset = origin;
+                    move_collider.size = collider_def.Size;
+                    move_collider.enabled = true;
+                    break;
+                }
+            }
+        }
         OnUpdate();
     }
 

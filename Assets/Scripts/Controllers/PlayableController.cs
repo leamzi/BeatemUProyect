@@ -9,7 +9,6 @@ public abstract class PlayableController : MonoBehaviour {
 
     public PlayableEntity playable_entity;
 
-
     private void Start ()
     {
         _playable_actions = new PlayableActions();
@@ -33,8 +32,6 @@ public abstract class PlayableController : MonoBehaviour {
             _state.Enter(playable_entity);
         }
     }
-
-
 
     protected abstract iPlayableState GetDefaultState();
 

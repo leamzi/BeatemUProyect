@@ -94,18 +94,24 @@ public class GuyAttackingState :iPlayableState
                     BoxCollider2D other_collider = overlapped_colliders[i]; 
                     if (other_collider != null && LayerMask.LayerToName(other_collider.gameObject.layer) == "HitZoneCollider")
                     {
-                        //GameObject hit_gameobject = other_collider.transform.parent.parent.gameObject;
-                        //if (playable_entity.gameObject != hit_gameobject)
-                        //{
-                        //    string layer_name = LayerMask.LayerToName(hit_gameobject.layer);
-                        //    switch (layer_name)
-                        //    {
+                        GameObject hit_gameobject = other_collider.transform.parent.parent.gameObject;
+                        if (playable_entity.gameObject != hit_gameobject)
+                        {
+                            string layer_name = LayerMask.LayerToName(hit_gameobject.layer);
+                            switch (layer_name)
+                            {
+                                case "Enemy":
+                                    EnemyController controller = hit_gameobject.GetComponent<EnemyController>();
+                                    if (controller != null)
+                                    {
+                                        controller.SetHit();
+                                    }
+                                    break;
+                                default:
 
-                        //        default:
-                        //            break;
-                        //    }
-                        //}
-                        Debug.Log("HIT: " + other_collider.transform.parent.parent.name);
+                                    break;
+                            }
+                        }
                     }
                 }
             }

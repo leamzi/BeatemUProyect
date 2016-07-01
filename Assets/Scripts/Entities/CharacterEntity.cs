@@ -66,7 +66,6 @@ public class CharacterEntity : MovableEntity {
                         if (attack_collider != null)
                         {
                             Vector3 origin = collider_def.origin;
-                            //origin.x *= (float) GetDirection();
                             attack_collider.offset = origin;
                             attack_collider.size = collider_def.Size;
                             attack_collider.enabled = true;
@@ -76,10 +75,6 @@ public class CharacterEntity : MovableEntity {
                         if (hitzone_collider != null)
                         {
                             Vector3 origin = collider_def.origin;
-                            //origin.x *= (float) GetDirection();
-
-                            //Debug.Log("get direction: " + GetDirection());
-                            //origin = transform.position + origin;
                             origin.z -= 1;
                             hitzone_collider.offset = origin;
                             hitzone_collider.size = collider_def.Size;
