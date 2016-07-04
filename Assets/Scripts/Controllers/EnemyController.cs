@@ -3,7 +3,7 @@ using System.Collections;
 
 public abstract class EnemyController : MonoBehaviour {
 
-    private iEnemyState _state;
+    protected iEnemyState _state;
 
     public EnemyEntity enemy_entity;
 	

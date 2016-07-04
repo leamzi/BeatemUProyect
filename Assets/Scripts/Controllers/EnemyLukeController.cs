@@ -20,7 +20,15 @@ public class EnemyLukeController : EnemyController
             enemy_entity.ChangeDirection((float)eWorldDirection.right);
 
         }
-        Debug.Log(gameObject.name + " is Hit");
-        SetState(new EnemyLukeHitState());
+
+        if (_state == null || _state.GetType() != typeof(EnemyLukeHitState))
+        {
+            SetState(new EnemyLukeHitState());
+        }
+        else
+        {
+            _state.Enter(enemy_entity);
+        }
+
     }
 }
