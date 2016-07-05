@@ -9,9 +9,9 @@ public class EnemyLukeController : EnemyController
         return new EnemyLukeIdleState();
     }
 
-    public override void SetHit(PlayableEntity dealer)
+    public override void SetHit(Transform dealer_transform)
     {
-        if ( dealer.transform.position.x < enemy_entity.transform.position.x)
+        if (dealer_transform.transform.position.x < enemy_entity.transform.position.x)
         {
             enemy_entity.ChangeDirection((float) eWorldDirection.left);
         }

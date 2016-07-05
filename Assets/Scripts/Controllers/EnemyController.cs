@@ -31,5 +31,5 @@ public abstract class EnemyController : MonoBehaviour {
 
     protected abstract iEnemyState GetDefaultState();
 
-    public abstract void SetHit(PlayableEntity dealer);
+    public abstract void SetHit(Transform dealer_transform);
 }

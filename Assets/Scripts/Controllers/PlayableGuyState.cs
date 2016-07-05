@@ -66,6 +66,29 @@ public class GuyAttackingState :iPlayableState
         }
     }
 
+    private void SpawnHitFX(PlayableEntity playable_entity, BoxCollider2D attack_collider, BoxCollider2D other_collider)
+    {
+        if ( playable_entity.hitfx_prefabs != null && playable_entity.hitfx_prefabs.Length > 0)
+        {
+            int id = Random.Range(0, playable_entity.hitfx_prefabs.Length);
+            Transform fx_prefab = playable_entity.hitfx_prefabs[id];
+
+            Vector2 min_point = new Vector2();
+            min_point.x = attack_collider.offset.x > other_collider.offset.x ? attack_collider.offset.x : other_collider.offset.x;
+            min_point.y = attack_collider.offset.x > other_collider.offset.y ? attack_collider.offset.y : other_collider.offset.y;
+
+            Vector2 max_point = new Vector2();
+            max_point.x = attack_collider.offset.x + attack_collider.size.x < other_collider.offset.x + other_collider.size.x ? attack_collider.offset.x + attack_collider.size.x : other_collider.offset.x + other_collider.size.x;
+            max_point.y = attack_collider.offset.y + attack_collider.size.y < other_collider.offset.y + other_collider.size.y ? attack_collider.offset.y + attack_collider.size.y : other_collider.offset.y + other_collider.size.y;
+
+            Vector3 fx_position = Vector2.Lerp(min_point, max_point, Random.value);
+            fx_position = fx_position + playable_entity.transform.position;
+            //fx_position.z = (attack_collider.transform.position.z < other_collider.transform.position.z ? attack_collider.transform.position.z : other_collider.transform.position.z) + ;
+
+            Object.Instantiate(fx_prefab, fx_position, new Quaternion());
+        }
+    }
+
     public iPlayableState HandleInput(PlayableEntity playable_entity, PlayableActions actions)
     {
         if (_continue_anim == false)
@@ -104,7 +127,7 @@ public class GuyAttackingState :iPlayableState
                                     EnemyController controller = hit_gameobject.GetComponent<EnemyController>();
                                     if (controller != null)
                                     {
-                                        controller.SetHit(playable_entity);
+                                        controller.SetHit(playable_entity.transform);
                                     }
                                     break;
                                 default:
