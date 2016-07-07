@@ -2,7 +2,7 @@
 using System.Collections;
 using InControl;
 
-public abstract class PlayableController : MonoBehaviour {
+public abstract class PlayableController : EntityController {
 
     private PlayableActions _playable_actions;
     private iPlayableState _state;

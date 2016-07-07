@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class EnemyController : MonoBehaviour {
+public abstract class EnemyController : EntityController {
 
     protected iEnemyState _state;
 
     public EnemyEntity enemy_entity;
-	
+
     private void Start ()
     {
         _state = GetDefaultState();
@@ -29,7 +29,15 @@ public abstract class EnemyController : MonoBehaviour {
         _state.Enter(enemy_entity);
     }
 
-    protected abstract iEnemyState GetDefaultState();
+    public void SetHit(Transform dealer_transform, int hit_damage)
+    {
+        ApplyHitState(dealer_transform);
+        if ( OnHit != null)
+        {
+            OnHit(dealer_transform, hit_damage);
+        }
+    }
 
-    public abstract void SetHit(Transform dealer_transform);
+    protected abstract iEnemyState GetDefaultState();
+    protected abstract void ApplyHitState(Transform dealer_transform);
 }
