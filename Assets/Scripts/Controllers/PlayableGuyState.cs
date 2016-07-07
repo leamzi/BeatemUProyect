@@ -73,17 +73,11 @@ public class GuyAttackingState :iPlayableState
             int id = Random.Range(0, playable_entity.hitfx_prefabs.Length);
             Transform fx_prefab = playable_entity.hitfx_prefabs[id];
 
-            Vector2 min_point = new Vector2();
-            min_point.x = attack_collider.offset.x > other_collider.offset.x ? attack_collider.offset.x : other_collider.offset.x;
-            min_point.y = attack_collider.offset.x > other_collider.offset.y ? attack_collider.offset.y : other_collider.offset.y;
-
-            Vector2 max_point = new Vector2();
-            max_point.x = attack_collider.offset.x + attack_collider.size.x < other_collider.offset.x + other_collider.size.x ? attack_collider.offset.x + attack_collider.size.x : other_collider.offset.x + other_collider.size.x;
-            max_point.y = attack_collider.offset.y + attack_collider.size.y < other_collider.offset.y + other_collider.size.y ? attack_collider.offset.y + attack_collider.size.y : other_collider.offset.y + other_collider.size.y;
-
-            Vector3 fx_position = Vector2.Lerp(min_point, max_point, Random.value);
+            Vector2 offset = attack_collider.offset;
+            offset.x *= (float)playable_entity.GetDirection();
+            Vector3 fx_position = Vector2.Lerp(offset - attack_collider.size / 2.0f, offset + attack_collider.size / 2.0f , Random.value);
             fx_position = fx_position + playable_entity.transform.position;
-            //fx_position.z = (attack_collider.transform.position.z < other_collider.transform.position.z ? attack_collider.transform.position.z : other_collider.transform.position.z) + ;
+            fx_position.z = (attack_collider.transform.position.z < other_collider.transform.position.z ? attack_collider.transform.position.z : other_collider.transform.position.z) + 1;
 
             Object.Instantiate(fx_prefab, fx_position, new Quaternion());
         }
@@ -128,6 +122,7 @@ public class GuyAttackingState :iPlayableState
                                     if (controller != null)
                                     {
                                         controller.SetHit(playable_entity.transform);
+                                        SpawnHitFX(playable_entity, attack_collider, other_collider);
                                     }
                                     break;
                                 default:
