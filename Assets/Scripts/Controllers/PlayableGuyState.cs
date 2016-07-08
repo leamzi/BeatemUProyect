@@ -52,11 +52,13 @@ public class GuyMovingState : iPlayableState
 
 public class GuyAttackingState :iPlayableState
 {
+    private int _last_hit_frame;
     private float _last_action;
     private bool _continue_anim;
 
     public void Enter(PlayableEntity playable_entity)
     {
+        _last_hit_frame = -1;
         _last_action = Time.time;
         _continue_anim = true; 
         if (playable_entity.animator != null)
@@ -75,7 +77,7 @@ public class GuyAttackingState :iPlayableState
 
             Vector2 offset = attack_collider.offset;
             offset.x *= (float)playable_entity.GetDirection();
-            Vector3 fx_position = Vector2.Lerp(offset - attack_collider.size / 2.0f, offset + attack_collider.size / 2.0f , Random.value);
+            Vector3 fx_position = Vector2.Lerp(offset - attack_collider.size / 2.0f, offset + attack_collider.size / 2.0f, Random.value);
             fx_position = fx_position + playable_entity.transform.position;
             fx_position.z = (attack_collider.transform.position.z < other_collider.transform.position.z ? attack_collider.transform.position.z : other_collider.transform.position.z) + 1;
 
@@ -97,37 +99,43 @@ public class GuyAttackingState :iPlayableState
         BoxCollider2D attack_collider = playable_entity.attack_collider;
         if (attack_collider != null && attack_collider.enabled == true)
         {
-            BoxCollider2D[] overlapped_colliders = new BoxCollider2D[8];
-
-            Vector2 min_point = attack_collider.offset;
-            min_point.x *= (float) playable_entity.GetDirection(); 
-            min_point = min_point + (Vector2) playable_entity.transform.position - attack_collider.size / 2.0f;
-            Vector2 max_point = min_point + attack_collider.size;
-
-            if (Physics2D.OverlapAreaNonAlloc(min_point, max_point, overlapped_colliders) > 0)
+            // Be sure to deal damage only once per attack frame (animation FPS != actual game FPS)
+            if (playable_entity.animator.CurrentFrame != _last_hit_frame)
             {
-                for (int i = 0; i < overlapped_colliders.Length; i++)
-                {
-                    BoxCollider2D other_collider = overlapped_colliders[i]; 
-                    if (other_collider != null && LayerMask.LayerToName(other_collider.gameObject.layer) == "HitZoneCollider")
-                    {
-                        GameObject hit_gameobject = other_collider.transform.parent.parent.gameObject;
-                        if (playable_entity.gameObject != hit_gameobject)
-                        {
-                            string layer_name = LayerMask.LayerToName(hit_gameobject.layer);
-                            switch (layer_name)
-                            {
-                                case "Enemy":
-                                    EnemyController controller = hit_gameobject.GetComponent<EnemyController>();
-                                    if (controller != null)
-                                    {
-                                        controller.SetHit(playable_entity.transform, 42);
-                                        SpawnHitFX(playable_entity, attack_collider, other_collider);
-                                    }
-                                    break;
-                                default:
+                BoxCollider2D[] overlapped_colliders = new BoxCollider2D[8];
 
-                                    break;
+                Vector2 min_point = attack_collider.offset;
+                min_point.x *= (float)playable_entity.GetDirection();
+                min_point = min_point + (Vector2)playable_entity.transform.position - attack_collider.size / 2.0f;
+                Vector2 max_point = min_point + attack_collider.size;
+
+                if (Physics2D.OverlapAreaNonAlloc(min_point, max_point, overlapped_colliders) > 0)
+                {
+                    for (int i = 0; i < overlapped_colliders.Length; i++)
+                    {
+                        BoxCollider2D other_collider = overlapped_colliders[i];
+                        if (other_collider != null && LayerMask.LayerToName(other_collider.gameObject.layer) == "HitZoneCollider")
+                        {
+                            GameObject hit_gameobject = other_collider.transform.parent.parent.gameObject;
+                            if (playable_entity.gameObject != hit_gameobject)
+                            {
+                                string layer_name = LayerMask.LayerToName(hit_gameobject.layer);
+                                switch (layer_name)
+                                {
+                                    case "Enemy":
+                                        EnemyController controller = hit_gameobject.GetComponent<EnemyController>();
+                                        if (controller != null)
+                                        {
+                                            controller.SetHit(playable_entity.transform, 42);
+                                            SpawnHitFX(playable_entity, attack_collider, other_collider);
+                                        }
+                                        break;
+                                    default:
+
+                                        break;
+                                }
+                                _last_hit_frame = playable_entity.animator.CurrentFrame;
+
                             }
                         }
                     }

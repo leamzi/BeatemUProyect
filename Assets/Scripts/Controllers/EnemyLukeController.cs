@@ -9,7 +9,7 @@ public class EnemyLukeController : EnemyController
         return new EnemyLukeIdleState();
     }
 
-    public override void ApplyHitState(Transform dealer_transform)
+    protected override void ApplyHitState(Transform dealer_transform)
     {
         //Change direction to face the hit dealer 
         if (dealer_transform.transform.position.x < enemy_entity.transform.position.x)
