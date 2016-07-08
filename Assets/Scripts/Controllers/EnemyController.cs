@@ -4,7 +4,6 @@ using System.Collections;
 public abstract class EnemyController : EntityController {
 
     protected iEnemyState _state;
-
     public EnemyEntity enemy_entity;
 
     private void Start ()

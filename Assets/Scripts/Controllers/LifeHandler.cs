@@ -4,7 +4,13 @@ using System.Collections;
 [RequireComponent(typeof(EntityController))]
 public class LifeHandler : MonoBehaviour
 {
-    private EntityController _controller;
+    private int _start_life;
+    private int _current_life;
+
+    public EntityController _controller;
+
+    public int start_life;
+    public int current_life { get { return _current_life; } }
 
     private void Awake()
     {
@@ -13,10 +19,18 @@ public class LifeHandler : MonoBehaviour
         {
             _controller.OnHit += OnHit;
         }
+
+        _start_life = start_life;
+        _current_life = _start_life;
     }
 
     private void OnHit(Transform dealer_transform, int hit_damage)
     {
-        Debug.Log("Damage Recieved: " + hit_damage);
+        _current_life = Mathf.Max(0, _current_life - hit_damage);
+
+        //if (_current_life == 0)
+        //{
+        //    _controller.SetDeath();
+        //}
     }
 }

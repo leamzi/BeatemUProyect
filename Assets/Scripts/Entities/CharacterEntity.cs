@@ -7,14 +7,32 @@ public enum eWorldDirection
     right = -1
 }
 
-public class CharacterEntity : MovableEntity {
+public class CharacterEntity : MovableEntity
+{
+    private tk2dSpriteAnimator _sprite_animator;
 
     protected float _direction_factor;
 
     public BoxCollider2D attack_collider;
     public BoxCollider2D hitzone_collider;
 
+    public Transform shadow;
+
+    public tk2dSpriteAnimator animator { get { return _sprite_animator; } }
+
     public eWorldDirection start_direction;
+
+    public virtual eWorldDirection GetDirection() { return (eWorldDirection)_direction_factor; }
+
+    protected override void OnAwake()
+    {
+        _sprite_animator = GetComponent<tk2dSpriteAnimator>();
+    }
+
+    protected override void OnStart()
+    {
+        ChangeDirection((float)start_direction);
+    }
 
     public void ChangeDirection (float dir_factor)
     {
@@ -39,8 +57,6 @@ public class CharacterEntity : MovableEntity {
             _direction_factor = dir_factor;
         } 
     }
-
-    public virtual eWorldDirection GetDirection() { return (eWorldDirection) _direction_factor; }
 
     protected override void OnUpdate()
     {
@@ -88,11 +104,6 @@ public class CharacterEntity : MovableEntity {
         }
     }
 
-    protected override void OnStart()
-    {
-        ChangeDirection((float)start_direction);
-    }
-
     public override void GoLeft(float factor = 1.0f)
     {
         base.GoLeft(factor);
@@ -106,7 +117,7 @@ public class CharacterEntity : MovableEntity {
     }
 
     protected override void OnLateUpdate() { }
-    protected override void OnAwake() { }
+    //protected override void OnAwake() { }
 
 #if UNITY_EDITOR
     protected override void OnDrawGizmos()

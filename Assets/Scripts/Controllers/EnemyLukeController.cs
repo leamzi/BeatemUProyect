@@ -33,6 +33,5 @@ public class EnemyLukeController : EnemyController
         {
             _state.Enter(enemy_entity);
         }
-
     }
 }
