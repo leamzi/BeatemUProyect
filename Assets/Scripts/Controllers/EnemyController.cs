@@ -28,7 +28,7 @@ public abstract class EnemyController : EntityController {
         _state.Enter(enemy_entity);
     }
 
-    public void SetHit(Transform dealer_transform, int hit_damage)
+    public override void SetHit(Transform dealer_transform, int hit_damage)
     {
         ApplyHitState(dealer_transform);
         if ( OnHit != null)
@@ -37,6 +37,17 @@ public abstract class EnemyController : EntityController {
         }
     }
 
+    public void SetDeath()
+    {
+        ApplyDeathState();
+
+        if (OnDeath != null)
+        {
+            OnDeath();
+        }
+    }
+
     protected abstract iEnemyState GetDefaultState();
     protected abstract void ApplyHitState(Transform dealer_transform);
+    protected abstract void ApplyDeathState();
 }

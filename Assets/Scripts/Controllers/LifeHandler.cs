@@ -28,9 +28,9 @@ public class LifeHandler : MonoBehaviour
     {
         _current_life = Mathf.Max(0, _current_life - hit_damage);
 
-        //if (_current_life == 0)
-        //{
-        //    _controller.SetDeath();
-        //}
+        if (_current_life == 0)
+        {
+            _controller.OnDeath();
+        }
     }
 }

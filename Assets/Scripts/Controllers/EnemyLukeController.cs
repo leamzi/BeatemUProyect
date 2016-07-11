@@ -34,4 +34,9 @@ public class EnemyLukeController : EnemyController
             _state.Enter(enemy_entity);
         }
     }
+
+    protected override void ApplyDeathState()
+    {
+        SetState(new EnemyLukeDeathState);
+    }
 }

@@ -12,6 +12,7 @@ public class EnemyLukeIdleState : iEnemyState
     {
         return null;
     }
+    
 }
 
 public class EnemyLukeHitState : iEnemyState
@@ -60,37 +61,37 @@ public class EnemyLukeHitState : iEnemyState
     }
 }
 
-//public class EnemyLukeDeathState : iEnemyState
-//{
-//    public void Enter(EnemyEntity enemy_entity)
-//    {
-//        if (enemy_entity.animator != null)
-//        {
-//            enemy_entity.animator.Play("DEATH");
-//        }
-//        else
-//        {
-//            SelfDestroy(enemy_entity.gameObject);
-//        }
+public class EnemyLukeDeathState : iEnemyState
+{
+    public void Enter(EnemyEntity enemy_entity)
+    {
+        if (enemy_entity.animator != null)
+        {
+            enemy_entity.animator.Play("DEATH");
+        }
+        else
+        {
+            SelfDestroy(enemy_entity.gameObject);
+        }
 
-//        if (enemy_entity.shadow != null)
-//        {
-//            GameObject.Destroy(enemy_entity.shadow.gameObject);
-//        }
-//    }
+        if (enemy_entity.shadow != null)
+        {
+            GameObject.Destroy(enemy_entity.shadow.gameObject);
+        }
+    }
 
-//    public iEnemyState HandleInput(EnemyEntity enemy_entity)
-//    {
-//        if (enemy_entity.animator != null || enemy_entity.animator.IsPlaying("DEATH") == false)
-//        {
-//            SelfDestroy(enemy_entity.gameObject);
-//            return null;
-//        }
-//        return null;
-//    }
+    public iEnemyState HandleInput(EnemyEntity enemy_entity)
+    {
+        if (enemy_entity.animator != null || enemy_entity.animator.IsPlaying("DEATH") == false)
+        {
+            SelfDestroy(enemy_entity.gameObject);
+            return null;
+        }
+        return null;
+    }
 
-//    private void SelfDestroy(GameObject self)
-//    {
-//        GameObject.Destroy(self);
-//    }
-//}
+    private void SelfDestroy(GameObject self)
+    {
+        GameObject.Destroy(self);
+    }
+}

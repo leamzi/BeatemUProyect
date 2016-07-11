@@ -8,4 +8,14 @@ public class PlayableGuyController : PlayableController
     {
         return new GuyIdleState();
     }
+
+    public override void SetDeath()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void SetHit(Transform dealer_transform, int hit_damage)
+    {
+        throw new NotImplementedException();
+    }
 }
