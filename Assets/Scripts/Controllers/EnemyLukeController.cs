@@ -37,6 +37,6 @@ public class EnemyLukeController : EnemyController
 
     protected override void ApplyDeathState()
     {
-        SetState(new EnemyLukeDeathState);
+        SetState(new EnemyLukeDeathState());
     }
 }

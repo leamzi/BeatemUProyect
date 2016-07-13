@@ -37,7 +37,7 @@ public abstract class EnemyController : EntityController {
         }
     }
 
-    public void SetDeath()
+    public override void SetDeath()
     {
         ApplyDeathState();
 

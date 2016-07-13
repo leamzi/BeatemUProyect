@@ -30,7 +30,7 @@ public class LifeHandler : MonoBehaviour
 
         if (_current_life == 0)
         {
-            _controller.OnDeath();
+            _controller.SetDeath();
         }
     }
 }

@@ -36,7 +36,6 @@ public class CharacterEntity : MovableEntity
 
     public void ChangeDirection (float dir_factor)
     {
-        //Debug.Log("Changing Direction: " + dir_factor);
         if (dir_factor != _direction_factor)
         {
             Vector3 local_scale = transform.localScale;
