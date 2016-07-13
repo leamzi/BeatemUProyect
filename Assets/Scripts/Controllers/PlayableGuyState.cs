@@ -126,7 +126,7 @@ public class GuyAttackingState :iPlayableState
                                         EnemyController controller = hit_gameobject.GetComponent<EnemyController>();
                                         if (controller != null)
                                         {
-                                            controller.SetHit(playable_entity.transform, 42);
+                                            controller.SetHit(playable_entity.transform, 2);
                                             SpawnHitFX(playable_entity, attack_collider, other_collider);
                                         }
                                         break;

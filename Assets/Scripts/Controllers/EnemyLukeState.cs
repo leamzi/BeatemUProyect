@@ -67,6 +67,7 @@ public class EnemyLukeDeathState : iEnemyState
     {
         if (enemy_entity.animator != null)
         {
+            Debug.Log("Playing animation Death");
             enemy_entity.animator.Play("DEATH");
         }
         else
