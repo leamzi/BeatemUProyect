@@ -28,12 +28,12 @@ public abstract class EnemyController : EntityController {
         _state.Enter(enemy_entity);
     }
 
-    public override void SetHit(Transform dealer_transform, int hit_damage)
+    public override void SetHit(Transform dealer_transform, int hit_damage, Vector3 hit_position)
     {
         ApplyHitState(dealer_transform);
         if ( OnHit != null)
         {
-            OnHit(dealer_transform, hit_damage);
+            OnHit(dealer_transform, hit_damage, hit_position);
         }
     }
 

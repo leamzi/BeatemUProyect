@@ -68,20 +68,14 @@ public class GuyAttackingState :iPlayableState
         }
     }
 
-    private void SpawnHitFX(PlayableEntity playable_entity, BoxCollider2D attack_collider, BoxCollider2D other_collider)
+    private void SpawnHitFX(PlayableEntity playable_entity, Vector3 hit_position)
     {
         if ( playable_entity.hitfx_prefabs != null && playable_entity.hitfx_prefabs.Length > 0)
         {
             int id = Random.Range(0, playable_entity.hitfx_prefabs.Length);
             Transform fx_prefab = playable_entity.hitfx_prefabs[id];
-
-            Vector2 offset = attack_collider.offset;
-            offset.x *= (float)playable_entity.GetDirection();
-            Vector3 fx_position = Vector2.Lerp(offset - attack_collider.size / 2.0f, offset + attack_collider.size / 2.0f, Random.value);
-            fx_position = fx_position + playable_entity.transform.position;
-            fx_position.z = (attack_collider.transform.position.z < other_collider.transform.position.z ? attack_collider.transform.position.z : other_collider.transform.position.z) + 1;
-
-            Object.Instantiate(fx_prefab, fx_position, new Quaternion());
+            hit_position.x -= 1.0f;
+            Object.Instantiate(fx_prefab, hit_position, new Quaternion());
         }
     }
 
@@ -126,8 +120,14 @@ public class GuyAttackingState :iPlayableState
                                         EnemyController controller = hit_gameobject.GetComponent<EnemyController>();
                                         if (controller != null)
                                         {
-                                            controller.SetHit(playable_entity.transform, 2);
-                                            SpawnHitFX(playable_entity, attack_collider, other_collider);
+                                            Vector2 offset = attack_collider.offset;
+                                            offset.x *= (float)playable_entity.GetDirection();
+                                            Vector3 hit_position = Vector2.Lerp(offset - attack_collider.size / 2.0f, offset + attack_collider.size / 2.0f, Random.value);
+                                            hit_position = hit_position + playable_entity.transform.position;
+                                            hit_position.z = (attack_collider.transform.position.z < other_collider.transform.position.z ? attack_collider.transform.position.z : other_collider.transform.position.z) + 1;
+
+                                            controller.SetHit(playable_entity.transform, 2, hit_position);
+                                            SpawnHitFX(playable_entity, hit_position);
                                         }
                                         break;
                                     default:

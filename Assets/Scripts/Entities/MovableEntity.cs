@@ -3,7 +3,7 @@ using System.Collections;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-public abstract class MovableEntity : MonoBehaviour {
+public abstract class MovableEntity : Entity {
 
     private Collider2D[] _surronding_colliders;
 
@@ -18,19 +18,15 @@ public abstract class MovableEntity : MonoBehaviour {
     public string[] collider_layers = null;
     public BoxCollider2D move_collider = null;
 
-    private void Awake ()
+    protected override void OnAwake ()
     {
         _sprite = GetComponent<tk2dSprite>();
-        OnAwake();
     }
 
-    private void Start ()
+    protected override void OnStart()
     {
         _velocity = new Vector2();
         _surronding_colliders = new Collider2D[16];
-
-        // Clamp initial position to integer values
-        Warp (ClampPosition(transform.position));
 
         //Update Layer mask
         _layer_mask = 0;
@@ -45,7 +41,7 @@ public abstract class MovableEntity : MonoBehaviour {
         OnStart();
     }
 
-    private void Update ()
+    protected override void OnUpdate()
     {
         if (move_collider != null)
         {
@@ -64,10 +60,25 @@ public abstract class MovableEntity : MonoBehaviour {
                 }
             }
         }
-        OnUpdate();
     }
 
-    private void LateUpdate ()
+    //Returns the number of the colliders impact by movement (also updates _surrounding_colliders list)
+    private int UpdateSurroundingColliders(Vector2 movement)
+    {
+        if (move_collider != null)
+        {
+            Vector2 move_center = move_collider.offset;
+            move_center.x *= transform.localScale.x;
+            move_center += (Vector2)transform.position + movement;
+            Vector2 move_min_point = move_center - move_collider.size / 2.0f;
+            Vector2 move_max_point = move_center + move_collider.size / 2.0f;
+
+            return Physics2D.OverlapAreaNonAlloc(move_min_point, move_max_point, _surronding_colliders, _layer_mask);
+        }
+        return 0;
+    }
+
+    protected override void OnLateUpdate()
     {
         //Clamp the current velocity
         Vector2 clamped_movement = new Vector2((int)_velocity.x, (int)_velocity.y);
@@ -106,26 +117,6 @@ public abstract class MovableEntity : MonoBehaviour {
         }
 
         OnLateUpdate();
-    }
-#if UNITY_EDITOR
-    protected virtual void OnDrawGizmos() {}
-#endif
-
-
-    //Returns the number of the colliders impact by movement (also updates _surrounding_colliders list)
-    private int UpdateSurroundingColliders (Vector2 movement)
-    {
-        if ( move_collider != null )
-        {
-            Vector2 move_center = move_collider.offset;
-            move_center.x *= transform.localScale.x;
-            move_center += (Vector2)transform.position + movement;
-            Vector2 move_min_point = move_center - move_collider.size / 2.0f;
-            Vector2 move_max_point = move_center + move_collider.size / 2.0f;
-
-            return Physics2D.OverlapAreaNonAlloc(move_min_point, move_max_point, _surronding_colliders, _layer_mask);
-        }
-        return 0;
     }
 
     private bool CanMove (Vector2 movement)
@@ -176,13 +167,6 @@ public abstract class MovableEntity : MonoBehaviour {
     private Vector2 Translate (Vector2 move_pos)
     {
         return move_pos + (Vector2)transform.position;
-    }
-
-    private Vector2 ClampPosition (Vector2 vector_pos)
-    {
-        vector_pos.x = (int)vector_pos.x;
-        vector_pos.y = (int)vector_pos.y;
-        return vector_pos;
     }
 
     private void Warp( Vector2 warp_pos)
@@ -241,9 +225,9 @@ public abstract class MovableEntity : MonoBehaviour {
         }
         return null;
     }
-    // --- ABSTACT METHODS --- //
-    protected abstract void OnStart();
-    protected abstract void OnAwake();
-    protected abstract void OnUpdate();
-    protected abstract void OnLateUpdate();
+    
+
+#if UNITY_EDITOR
+    protected virtual void OnDrawGizmos() { }
+#endif
 }
