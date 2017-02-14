@@ -24,7 +24,7 @@ public class LifeHandler : MonoBehaviour
         _current_life = _start_life;
     }
 
-    private void OnHit(Transform dealer_transform, int hit_damage, Vector3 hit_position)
+    private void OnHit(Transform dealer_transform, int hit_damage)
     {
         _current_life = Mathf.Max(0, _current_life - hit_damage);
 
@@ -33,14 +33,4 @@ public class LifeHandler : MonoBehaviour
             _controller.SetDeath();
         }
     }
-
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        if (Utils.show_gizmos == true)
-        {
-            
-        }
-    }
-#endif
 }

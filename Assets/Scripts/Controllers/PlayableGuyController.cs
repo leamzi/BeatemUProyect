@@ -14,7 +14,7 @@ public class PlayableGuyController : PlayableController
         throw new NotImplementedException();
     }
 
-    public override void SetHit(Transform dealer_transform, int hit_damage, Vector3 hit_position)
+    public override void SetHit(Transform dealer_transform, int hit_damage)
     {
         throw new NotImplementedException();
     }
